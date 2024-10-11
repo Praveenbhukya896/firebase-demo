@@ -47,7 +47,7 @@
             try {
                 await loginUser(email, password);
                 alert('Login successful!');
-                window.location.href = 'index.html'; // Redirect to main page
+                window.location.href = 'dashboard.html'; // Redirect to dashboard page
             } catch (error) {
                 alert(error.message);
             }
@@ -57,7 +57,7 @@
             try {
                 await loginWithGoogle();
                 alert('Login successful with Google!');
-                window.location.href = 'index.html'; // Redirect to main page
+                window.location.href = 'dashboard.html'; // Redirect to dashboard page
             } catch (error) {
                 alert(error.message);
             }
