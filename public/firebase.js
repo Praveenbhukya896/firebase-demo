@@ -38,3 +38,4 @@ export function resetPassword(email) {
 export function loginWithGoogle() {
     const provider = new GoogleAuthProvider();
     return signInWithPopup(auth, provider);
+}
