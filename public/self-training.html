@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Health Assessment</title>
+    <link rel="stylesheet" href="styles.css"> <!-- Link to your CSS -->
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+        }
+        .navbar {
+            width: 100%;
+            background-color: #2c7a7b;
+            padding: 10px 20px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.15);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: fixed; /* Make the navbar fixed at the top */
+            top: 0; /* Align to the top */
+            left: 0; /* Align to the left */
+            z-index: 1000; /* Ensure it stays above other content */
+        }
+
+        .navbar h1 {
+            color: white;
+            font-size: 20px;
+            margin: 0;
+        }
+
+        .navbar ul {
+            list-style: none;
+            display: flex;
+            margin: 0;
+            padding: 0;
+        }
+
+        .navbar ul li {
+            margin-right: 15px;
+        }
+
+        .navbar ul li a {
+            color: white;
+            text-decoration: none;
+            padding: 10px;
+            transition: background-color 0.3s;
+        }
+
+        .navbar ul li a:hover {
+            background-color: rgba(255, 255, 255, 0.2);
+            border-radius: 5px;
+        }
+
+        .content {
+            margin: 70px 20px; /* Margin for navbar */
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        form {
+            width: 100%; /* Full width */
+            max-width: 600px; /* Maximum width */
+            display: flex;
+            flex-direction: column; /* Align questions vertically */
+            margin: 20px auto; /* Center form */
+        }
+        label {
+            margin-bottom: 5px; /* Space between label and input */
+        }
+        input, select {
+            padding: 10px; /* Padding for input fields */
+            margin-bottom: 15px; /* Space between fields */
+            border: 1px solid #ccc; /* Border for inputs */
+            border-radius: 5px; /* Rounded corners */
+            width: 100%; /* Full width */
+        }
+        button {
+            padding: 10px 20px;
+            background-color: #28a745;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+        button:hover {
+            background-color: #218838;
+        }
+        #assessment-result {
+            margin-top: 20px;
+            font-weight: bold;
+            color: #333;
+            display: none; /* Hidden by default */
+        }
+        #warmup-button {
+            display: none; /* Hidden by default */
+            margin-top: 20px; /* Space above button */
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar">
+        <h1>Fitness Disability</h1>
+        <ul>
+            <li><a href="/">Home</a></li>
+            <li><a href="/nutrition">Nutrition</a></li>
+            <li><a href="/about">About</a></li>
+
+            <li><a href="/contact">Contact</a></li>
+            <li><a href="/profile">Profile</a></li>
+            <li><a href="/logout">Logout</a></li>
+        </ul>
+    </nav>
+
+    <div class="content">
+        <h1>Health Assessment</h1>
+        
+        <form id="health-assessment-form">
+            <label for="age">Age:</label>
+            <input type="number" id="age" required>
+
+            <label for="fitness-level">Current fitness level (1-10):</label>
+            <input type="number" id="fitness-level" min="1" max="10" required>
+
+            <label for="injuries">Do you have any previous injuries?</label>
+            <select id="injuries" required>
+                <option value="no">No</option>
+                <option value="yes">Yes</option>
+            </select>
+
+            <label for="medical-conditions">Do you have any medical conditions?</label>
+            <select id="medical-conditions" required>
+                <option value="no">No</option>
+                <option value="yes">Yes</option>
+            </select>
+
+            <label for="exercise-frequency">How often do you exercise?</label>
+            <select id="exercise-frequency" required>
+                <option value="never">Never</option>
+                <option value="1-2">1-2 times a week</option>
+                <option value="3-4">3-4 times a week</option>
+                <option value="5+">5+ times a week</option>
+            </select>
+
+            <label for="pain-discomfort">Do you experience any pain or discomfort when moving?</label>
+            <select id="pain-discomfort" required>
+                <option value="no-pain">No pain</option>
+                <option value="mild-pain">Mild pain</option>
+                <option value="moderate-pain">Moderate pain</option>
+                <option value="severe-pain">Severe pain</option>
+            </select>
+
+            <label for="energy-levels">How would you rate your energy levels on a daily basis?</label>
+            <select id="energy-levels" required>
+                <option value="low">Low</option>
+                <option value="moderate">Moderate</option>
+                <option value="high">High</option>
+            </select>
+
+            <label for="fitness-goal">What is your main fitness goal?</label>
+            <select id="fitness-goal" required>
+                <option value="strength">Improve strength</option>
+                <option value="flexibility">Increase flexibility</option>
+                <option value="weight-loss">Lose weight</option>
+                <option value="endurance">Boost endurance</option>
+                <option value="overall-health">Improve overall health</option>
+            </select>
+
+            <button type="submit">Submit Assessment</button>
+        </form>
+
+        <div id="assessment-result"></div>
+        <button id="warmup-button" onclick="proceedToWarmUp()">Proceed to Warm-Up Exercises</button>
+    </div>
+
+    <script>
+        document.getElementById('health-assessment-form').addEventListener('submit', function(event) {
+            event.preventDefault(); // Prevent form submission
+
+            // Gather form data
+            const age = document.getElementById('age').value;
+            const fitnessLevel = document.getElementById('fitness-level').value;
+            const injuries = document.getElementById('injuries').value;
+            const medicalConditions = document.getElementById('medical-conditions').value;
+            const exerciseFrequency = document.getElementById('exercise-frequency').value;
+            const painDiscomfort = document.getElementById('pain-discomfort').value;
+            const energyLevels = document.getElementById('energy-levels').value;
+            const fitnessGoal = document.getElementById('fitness-goal').value;
+
+            // Process the assessment
+            processAssessment(age, fitnessLevel, injuries, medicalConditions, exerciseFrequency, painDiscomfort, energyLevels, fitnessGoal);
+        });
+
+        function processAssessment(age, fitnessLevel, injuries, medicalConditions, exerciseFrequency, painDiscomfort, energyLevels, fitnessGoal) {
+            let message = "Assessment Results:\n";
+
+            // Evaluation logic
+            if (injuries === 'yes' || medicalConditions === 'yes') {
+                message += "Please consult a healthcare provider before proceeding with a training program.";
+            } else if (exerciseFrequency === 'never' && painDiscomfort !== 'no-pain') {
+                message += "It's advisable to start with light activities or consult a healthcare provider.";
+            } else {
+                message += "You are cleared to proceed! Recommended warm-up exercises will be provided.";
+            }
+
+            // Display the result
+            const resultDiv = document.getElementById('assessment-result');
+            resultDiv.innerText = message;
+            resultDiv.style.display = 'block';
+            document.getElementById('warmup-button').style.display = 'block'; // Show warm-up button
+        }
+
+        function proceedToWarmUp() {
+            window.location.href = "warmup-exercises.html"; // Redirect to warm-up exercises page
+        }
+    </script>
+</body>
+</html>
+// ST

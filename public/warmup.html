@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Warm-up Exercises</title>
+    <script type="module">
+        import { auth } from "./firebase.js"; 
+        import { onAuthStateChanged } from "https://www.gstatic.com/firebasejs/9.0.0/firebase-auth.js"; 
+        import { doc, getDoc } from "https://www.gstatic.com/firebasejs/9.0.0/firebase-firestore.js"; 
+        import { db } from "./firebase.js"; 
+
+        async function fetchAndDisplayWarmupExercises() {
+            const user = auth.currentUser;
+            if (user) {
+                const userDoc = doc(db, "users", user.uid);
+                const userData = await getDoc(userDoc);
+                if (userData.exists()) {
+                    const { disabilityType, disabilityName, levelOfDisability, age, gender } = userData.data();
+                    try {
+                        const warmupExercises = await fetchWarmupExercisesFromServer(disabilityType, disabilityName, levelOfDisability, age, gender);
+                        displayWarmupExercises(warmupExercises);
+                    } catch (error) {
+                        console.error("Error fetching warm-up exercises from server:", error);
+                        alert("Error fetching warm-up exercises.");
+                    }
+                } else {
+                    alert("No user data found!");
+                }
+            } else {
+                alert("User not logged in.");
+                window.location.href = 'login.html';
+            }
+        }
+
+        async function fetchWarmupExercisesFromServer(disabilityType, disabilityName, levelOfDisability, age, gender) {
+            try {
+                const response = await fetch('http://localhost:4000/generate-warmup-exercises', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ disabilityType, disabilityName, levelOfDisability, age, gender }),
+                });
+
+                console.log('Response status:', response.status); // Log response status
+                
+                if (!response.ok) {
+                    const errorText = await response.text(); // Get the error message
+                    console.error("Error details:", errorText); // Log error details
+                    throw new Error("Failed to fetch warm-up exercises from server.");
+                }
+
+                const data = await response.json();
+                return data.warmupExercises; // assuming server responds with { warmupExercises: ... }
+            } catch (error) {
+                console.error("Error in fetchWarmupExercisesFromServer:", error);
+                throw error;
+            }
+        }
+
+        function displayWarmupExercises(warmupExercises) {
+            document.getElementById('warmup-exercises').innerText = warmupExercises || "No warm-up exercises available.";
+        }
+
+        onAuthStateChanged(auth, (user) => {
+            if (user) {
+                fetchAndDisplayWarmupExercises();
+            } else {
+                window.location.href = 'login.html';
+            }
+        });
+    </script>
+</head>
+<body>
+    <h1>Your Warm-up Exercises</h1>
+    <div id="warmup-exercises"></div>
+</body>
+</html>

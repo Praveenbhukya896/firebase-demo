@@ -4,25 +4,139 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Register</title>
-    <script type="module" src="firebase.js"></script> <!-- Link to your JS file -->
+    <script type="module" src="firebase.js"></script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 0;
+        }
+
+        .navbar {
+            width: 100%;
+            background-color: #3498db;
+            padding: 10px 20px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.15);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: fixed; /* Make the navbar fixed at the top */
+            top: 0; /* Align to the top */
+            left: 0; /* Align to the left */
+            z-index: 1000; /* Ensure it stays above other content */
+        }
+
+        .navbar h1 {
+            color: white;
+            font-size: 20px;
+            margin: 0;
+        }
+
+        .navbar ul {
+            list-style: none;
+            display: flex;
+            margin: 0;
+            padding: 0;
+        }
+
+        .navbar ul li {
+            margin-right: 15px;
+        }
+
+        .navbar ul li a {
+            color: white;
+            text-decoration: none;
+            padding: 10px;
+            transition: background-color 0.3s;
+        }
+
+        .navbar ul li a:hover {
+            background-color: rgba(255, 255, 255, 0.2);
+            border-radius: 5px;
+        }
+
+        .container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin-top: 80px; /* Add top margin to avoid overlap with the navbar */
+        }
+
+        h1 {
+            margin-bottom: 20px;
+            color: #333;
+        }
+
+        #registration-form {
+            background: white;
+            padding: 20px;
+            border-radius: 5px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            width: 500px;
+        }
+
+        input, select {
+            width: 100%;
+            padding: 10px;
+            margin: 10px 0;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            box-sizing: border-box;
+        }
+
+        button {
+            width: 100%;
+            padding: 10px;
+            background-color: #28a745;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+
+        button:hover {
+            background-color: #218838;
+        }
+        .login-btn {
+    width: 100%;
+    padding: 14px;
+    margin-top: 12px;
+    background-color: #2c7a7b; /* Softer teal color */
+    color: white;
+    border: none;
+    border-radius: 8px; /* Slightly more rounded corners */
+    font-size: 20px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background-color 0.3s ease, box-shadow 0.3s ease;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Subtle shadow */
+}
+
+.login-btn:hover {
+    background-color: #285e61; /* Darker teal for hover */
+}
+    </style>
 </head>
 <body>
-
-    <h1>Register</h1>
-    <form id="registration-form">
-        <input type="email" id="register-email" placeholder="Email" required>
-        <input type="password" id="register-password" placeholder="Password" required>
-        <input type="text" id="disability-type" placeholder="Disability Type (mental, physical, injury)" required>
-        <input type="text" id="disability-name" placeholder="Name of Disability" required>
-        <input type="text" id="level-of-disability" placeholder="basic or moderate or severe" required>
-        <input type="number" id="age" placeholder="Age" required>
-        <select id="gender" required>
-            <option value="">Select Gender</option>
-            <option value="male">Male</option>
-            <option value="female">Female</option>
-        </select>
-        <button type="submit">Register</button>
-    </form>
+    <div class="container">
+        <h1>Register</h1>
+        <form id="registration-form">
+            <input type="email" id="register-email" placeholder="Email" required>
+            <input type="password" id="register-password" placeholder="Password" required>
+            <input type="text" id="disability-type" placeholder="Disability Type (mental, physical, injury)" required>
+            <input type="text" id="disability-name" placeholder="Name of Disability" required>
+            <input type="text" id="level-of-disability" placeholder="Basic, Moderate, or Severe" required>
+            <input type="number" id="age" placeholder="Age" required>
+            <select id="gender" required>
+                <option value="">Select Gender</option>
+                <option value="male">Male</option>
+                <option value="female">Female</option>
+            </select>
+            <button type="submit" class="login-btn">Register</button>
+        </form>
+    </div>
 
     <script type="module">
         import { registerUser } from './firebase.js';
@@ -42,16 +156,13 @@
             };
 
             try {
-                // Log form data to ensure everything is being collected
                 console.log("Registering user with data:", { email, password, userData });
-
-                // Call the registerUser function and pass the form data
                 await registerUser(email, password, userData);
                 alert('Registration successful!');
                 window.location.href = 'login.html'; // Redirect to login page after successful registration
             } catch (error) {
-                console.error("Registration error:", error); // Log any errors for debugging
-                alert(error.message); // Show error to the user
+                console.error("Registration error:", error);
+                alert(error.message);
             }
         });
     </script>

@@ -1,4 +1,4 @@
-// Import the functions you need from the SDKs you need
+// Import the functions you need from the SDKs
 import { initializeApp } from "https://www.gstatic.com/firebasejs/9.0.0/firebase-app.js";
 import { getAnalytics } from "https://www.gstatic.com/firebasejs/9.0.0/firebase-analytics.js";
 import { getAuth, createUserWithEmailAndPassword, GoogleAuthProvider, signInWithEmailAndPassword, sendPasswordResetEmail, signInWithPopup } from "https://www.gstatic.com/firebasejs/9.0.0/firebase-auth.js";
@@ -24,25 +24,73 @@ const db = getFirestore(app); // Initialize Firestore
 // Export the initialized authentication and Firestore database
 export { auth, db }; // Export the auth variable for use in other files
 
-// Function to register a user
+// Function to register a regular user
 export async function registerUser(email, password, userData) {
-    const userCredential = await createUserWithEmailAndPassword(auth, email, password);
-    const user = userCredential.user;
+    try {
+        console.log("Attempting to register user with email:", email);
+        
+        const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+        const user = userCredential.user;
 
-    // Store additional user data in Firestore
-    await setDoc(doc(db, "users", user.uid), {
-        email: email,
-        disabilityType: userData.disabilityType,
-        disabilityName: userData.disabilityName,
-        levelOfDisability: userData.levelOfDisability,
-        age: userData.age,
-        gender: userData.gender
-    });
+        console.log("User registered successfully:", user.uid);
+
+        // Validate userData
+        if (!userData.disabilityType || !userData.disabilityName) {
+            console.error("Missing required user data.");
+            throw new Error("Invalid user data");
+        }
+
+        // Store user data in the "users" collection in Firestore
+        await setDoc(doc(db, "users", user.uid), {
+            email: email,
+            disabilityType: userData.disabilityType,
+            disabilityName: userData.disabilityName,
+            levelOfDisability: userData.levelOfDisability,
+            age: userData.age,
+            gender: userData.gender,
+            role: "user"  // Specify user role
+        });
+        console.log("User data stored successfully in Firestore.");
+    } catch (error) {
+        console.error("Error registering user: ", error);
+        throw error;
+    }
 }
 
-// Function to log in a user
-export function loginUser(email, password) {
-    return signInWithEmailAndPassword(auth, email, password);
+// Function to register a trainer
+export async function registerTrainer(email, password, trainerData) {
+    try {
+        console.log("Attempting to register trainer with email:", email);
+        
+        const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+        const user = userCredential.user;
+
+        console.log("Trainer registered successfully:", user.uid);
+
+        // Store trainer data in the "trainers" collection in Firestore
+        await setDoc(doc(db, "trainers", user.uid), {
+            email: email,
+            specialization: trainerData.specialization,
+            experienceLevel: trainerData.experienceLevel,
+            certifications: trainerData.certifications,
+            availableModes: trainerData.availableModes, // For example, online or in-person training
+            role: "trainer"  // Specify trainer role
+        });
+        console.log("Trainer data stored successfully in Firestore.");
+    } catch (error) {
+        console.error("Error registering trainer: ", error);
+        throw error;
+    }
+}
+
+// Function to log in a user (either regular user or trainer)
+export async function loginUser(email, password) {
+    try {
+        return await signInWithEmailAndPassword(auth, email, password);
+    } catch (error) {
+        console.error("Error logging in: ", error);
+        throw error;
+    }
 }
 
 // Function to send password reset email
@@ -51,7 +99,12 @@ export function resetPassword(email) {
 }
 
 // Function to log in with Google
-export function loginWithGoogle() {
+export async function loginWithGoogle() {
     const provider = new GoogleAuthProvider();
-    return signInWithPopup(auth, provider);
+    try {
+        return await signInWithPopup(auth, provider);
+    } catch (error) {
+        console.error("Error logging in with Google: ", error);
+        throw error;
+    }
 }
