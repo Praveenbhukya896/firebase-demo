@@ -1,7 +1,8 @@
 // Import the functions you need from the SDKs you need
 import { initializeApp } from "https://www.gstatic.com/firebasejs/9.0.0/firebase-app.js";
 import { getAnalytics } from "https://www.gstatic.com/firebasejs/9.0.0/firebase-analytics.js";
-import { getAuth, createUserWithEmailAndPassword, GoogleAuthProvider, signInWithEmailAndPassword, sendPasswordResetEmail, signInWithPopup  } from "https://www.gstatic.com/firebasejs/9.0.0/firebase-auth.js";
+import { getAuth, createUserWithEmailAndPassword, GoogleAuthProvider, signInWithEmailAndPassword, sendPasswordResetEmail, signInWithPopup } from "https://www.gstatic.com/firebasejs/9.0.0/firebase-auth.js";
+import { getFirestore, doc, setDoc } from "https://www.gstatic.com/firebasejs/9.0.0/firebase-firestore.js"; // Import Firestore functions
 
 // Your web app's Firebase configuration
 const firebaseConfig = {
@@ -16,25 +17,40 @@ const firebaseConfig = {
 
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);
-const analytics = getAnalytics(app);
+const analytics = getAnalytics(app); // Initialize Firebase Analytics
 const auth = getAuth(app); // Initialize Firebase Authentication
+const db = getFirestore(app); // Initialize Firestore
+
+// Export the initialized authentication and Firestore database
+export { auth, db }; // Export the auth variable for use in other files
 
 // Function to register a user
-export function registerUser(email, password) {
-    return createUserWithEmailAndPassword(auth, email, password);
+export async function registerUser(email, password, userData) {
+    const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+    const user = userCredential.user;
+
+    // Store additional user data in Firestore
+    await setDoc(doc(db, "users", user.uid), {
+        email: email,
+        disabilityType: userData.disabilityType,
+        disabilityName: userData.disabilityName,
+        levelOfDisability: userData.levelOfDisability,
+        age: userData.age,
+        gender: userData.gender
+    });
 }
 
 // Function to log in a user
 export function loginUser(email, password) {
     return signInWithEmailAndPassword(auth, email, password);
 }
+
 // Function to send password reset email
 export function resetPassword(email) {
     return sendPasswordResetEmail(auth, email);
 }
 
-
-
+// Function to log in with Google
 export function loginWithGoogle() {
     const provider = new GoogleAuthProvider();
     return signInWithPopup(auth, provider);
