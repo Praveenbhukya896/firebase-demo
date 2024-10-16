@@ -24,7 +24,8 @@ app.get('/', (req, res) => {
 app.post('/generate-nutrition-plan', async (req, res) => {
     const { disabilityType, disabilityName, levelOfDisability, age, gender } = req.body;
 
-    const prompt = `Generate a nutrition plan f or a person with ${disabilityType} (${disabilityName}), level ${levelOfDisability}, age ${age}, and gender ${gender}.`;
+    const prompt = `Generate a nutrition plan for a person with ${disabilityType} (${disabilityName}), level ${levelOfDisability}, age ${age}, and gender ${gender}, the response should not be negative and give atleast few items for breakfast, lunch, snacks and dinner.
+     You can give some suggestions as well that will help the user. Remove all the special symbols and don't show option, just give the items`;
 
     try {
         const result = await model.generateContent(prompt);
