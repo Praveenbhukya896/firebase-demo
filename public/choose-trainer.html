@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Choose a Trainer</title>
+    <link rel="stylesheet" href="styles.css"> <!-- Link to your CSS -->
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+        }
+        .header {
+            background-color: #dba134;
+            color: white;
+            padding: 20px;
+            text-align: center;
+        }
+        .container {
+            display: flex;
+            margin: 20px;
+        }
+        .filter-panel {
+            width: 25%;
+            padding: 15px;
+            background-color: white;
+            border-radius: 5px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            margin-right: 20px; /* Space between filter panel and trainer list */
+        }
+        .filter-panel h2 {
+            margin: 0 0 10px;
+        }
+        .filter-panel label {
+            display: block;
+            margin: 10px 0 5px;
+        }
+        .filter-panel select, .filter-panel input {
+            width: 100%;
+            padding: 8px;
+            margin-bottom: 10px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+        .trainer-list {
+            flex-grow: 1;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+        }
+        .trainer-card {
+            background-color: white;
+            border-radius: 5px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            margin: 10px;
+            padding: 15px;
+            width: calc(30% - 20px);
+            text-align: center;
+        }
+        .trainer-card img {
+            width: 100%;
+            height: auto;
+            border-radius: 50%;
+        }
+        .trainer-card h3 {
+            margin: 10px 0 5px;
+        }
+        .trainer-card p {
+            margin: 5px 0;
+        }
+        .trainer-card button {
+            background-color: #28a745;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            padding: 10px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+            margin: 5px 0; /* Add space between buttons */
+        }
+        .trainer-card button:hover {
+            background-color: #218838;
+        }
+        .featured-section {
+            margin-top: 20px;
+            padding: 20px;
+            background-color: white;
+            border-radius: 5px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+        .featured-section h2 {
+            margin-bottom: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>Choose a Trainer</h1>
+    </div>
+    <div class="container">
+        <div class="filter-panel">
+            <h2>Filters</h2>
+            <label for="search">Search by Name or Specialization:</label>
+            <input type="text" id="search" placeholder="Enter trainer name or specialization">
+
+            <label for="specialization">Specialization:</label>
+            <select id="specialization">
+                <option value="all">All</option>
+                <option value="strength">Strength Training</option>
+                <option value="rehab">Rehabilitation</option>
+                <option value="yoga">Yoga</option>
+                <option value="cardio">Cardio</option>
+            </select>
+
+            <label for="location">Location:</label>
+            <select id="location">
+                <option value="all">All</option>
+                <option value="online">Online</option>
+                <option value="ny">New York</option>
+                <option value="la">Los Angeles</option>
+                <option value="chi">Chicago</option>
+            </select>
+
+            <label for="rating">Rating:</label>
+            <select id="rating">
+                <option value="all">All</option>
+                <option value="4">4 Stars & Up</option>
+                <option value="3">3 Stars & Up</option>
+            </select>
+        </div>
+        <div class="trainer-list">
+            <!-- Trainer Cards -->
+            <div class="trainer-card">
+                <img src="trainer1.jpg" alt="Trainer Name">
+                <h3>John Doe</h3>
+                <p>Specialization: Strength Training</p>
+                <p>Experience: 5 Years</p>
+                <p>Rating: ★★★★☆ (120 Reviews)</p>
+                <p>Bio: “I believe in a holistic approach to fitness...”</p>
+                <button>View Profile</button>
+                <button>Book Now</button>
+            </div>
+            <div class="trainer-card">
+                <img src="trainer2.jpg" alt="Trainer Name">
+                <h3>Jane Smith</h3>
+                <p>Specialization: Yoga</p>
+                <p>Experience: 7 Years</p>
+                <p>Rating: ★★★★★ (150 Reviews)</p>
+                <p>Bio: “Yoga is not just a workout, it's a way of life...”</p>
+                <button>View Profile</button>
+                <button>Book Now</button>
+            </div>
+            <div class="trainer-card">
+                <img src="trainer3.jpg" alt="Trainer Name">
+                <h3>Shriii</h3>
+                <p>Specialization: Gynacology</p>
+                <p>Experience: 8 Years</p>
+                <p>Rating: ★★★★☆ (95 Reviews)</p>
+                <p>Bio: “Serving for mothers and my daughters...”</p>
+                <button>View Profile</button>
+                <button>Book Now</button>
+            </div>
+            <div class="trainer-card">
+              <img src="trainer3.jpg" alt="Trainer Name">
+              <h3>Mike Johnson</h3>
+              <p>Specialization: Rehabilitation</p>
+              <p>Experience: 10 Years</p>
+              <p>Rating: ★★★★☆ (95 Reviews)</p>
+              <p>Bio: “Rehab is all about patience and consistency...”</p>
+              <button>View Profile</button>
+              <button>Book Now</button>
+          </div>
+        </div>
+    </div>
+    
+    <div class="featured-section">
+        <h2>Featured Trainers</h2>
+        <div class="trainer-list">
+            <div class="trainer-card">
+                <img src="trainer4.jpg" alt="Trainer Name">
+                <h3>Emily Davis</h3>
+                <p>Specialization: Cardio</p>
+                <p>Experience: 3 Years</p>
+                <p>Rating: ★★★★★ (80 Reviews)</p>
+                <p>Bio: “Cardio workouts can be fun and effective...”</p>
+                <button>View Profile</button>
+                <button>Book Now</button>
+            </div>
+            
+            <div class="trainer-card">
+              <img src="trainer4-1.jpg" alt="Trainer Name">
+              <h3>Emily Davis</h3>
+              <p>Specialization: Cardio</p>
+              <p>Experience: 5 Years</p>
+              <p>Rating: ★★★★★ (40 Reviews)</p>
+              <p>Bio: “Cardio workouts can be fun and effective...”</p>
+              <button>View Profile</button>
+              <button>Book Now</button>
+          </div>
+            <div class="trainer-card">
+                <img src="trainer5.jpg" alt="Trainer Name">
+                <h3>Chris Brown</h3>
+                <p>Specialization: Nutrition</p>
+                <p>Experience: 4 Years</p>
+                <p>Rating: ★★★★☆ (110 Reviews)</p>
+                <p>Bio: “Nutrition is key to achieving your fitness goals...”</p>
+                <button>View Profile</button>
+                <button>Book Now</button>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
